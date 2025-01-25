@@ -9,6 +9,12 @@ interface UseRequestParams {
   sortOrder?: "asc" | "desc"; // Направление сортировки
 }
 
+const generateHexId = (): string => {
+  return Array.from({ length: 16 }, () =>
+    Math.floor(Math.random() * 16).toString(16)
+  ).join("");
+};
+
 export const useRequest = ({
   page,
   pageSize,
@@ -19,9 +25,10 @@ export const useRequest = ({
 
   // Генерация моковых данных
   for (let i = 0; i < 50; i++) {
+    const id = useMemo(() => generateHexId(), []);
     const username = usernames[i % usernames.length]; // Циклическое использование имен
     const totalTurnover = useMemo(() => generateRandomTurnover(), []);
-    mock.push({ username, totalTurnover });
+    mock.push({ id, username, totalTurnover });
   }
 
   const [data, setData] = useState(mock);
